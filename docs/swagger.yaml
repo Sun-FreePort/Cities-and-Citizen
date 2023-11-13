@@ -1,0 +1,15 @@
+basePath: /
+host: localhost:22042
+info:
+  contact:
+    email: uiosun@outlook.com
+    name: C&C API Support
+  description: "Wish nice day for you! \U0001F44B"
+  license:
+    name: GPL-3.0
+    url: https://github.com/Sun-FreePort/Cities-and-Citizen/blob/main/LICENSE
+  termsOfService: https://www.uiosun.com/policy/privacy
+  title: Cities-and-Citizen API
+  version: "1.0"
+paths: {}
+swagger: "2.0"

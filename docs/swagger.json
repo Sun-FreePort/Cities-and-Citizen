@@ -1,0 +1,20 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Wish nice day for you! 👋",
+        "title": "Cities-and-Citizen API",
+        "termsOfService": "https://www.uiosun.com/policy/privacy",
+        "contact": {
+            "name": "C\u0026C API Support",
+            "email": "uiosun@outlook.com"
+        },
+        "license": {
+            "name": "GPL-3.0",
+            "url": "https://github.com/Sun-FreePort/Cities-and-Citizen/blob/main/LICENSE"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:22042",
+    "basePath": "/",
+    "paths": {}
+}
