@@ -2,7 +2,9 @@ package config
 
 import (
 	"fmt"
+	"github.com/Sun-FreePort/Cities-and-Citizen/model"
 	"gorm.io/driver/mysql"
+	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"os"
 	"sync"
@@ -29,28 +31,35 @@ func getDB(projectPath string) {
 	onceDB.Do(func() {
 		// 生成配置
 		configKV := GetConfig(projectPath)
-		params := MySQLParams{
-			Host:      configKV["DB_HOST"],
-			Port:      configKV["DB_PORT"],
-			Username:  configKV["DB_USERNAME"],
-			Password:  configKV["DB_PASSWORD"],
-			Database:  configKV["DB_DATABASE"],
-			ParseTime: configKV["DB_PARSE_TIME"],
-		}
 
-		// 生成对象
-		dbConn, err := gorm.Open(mysql.Open(fmt.Sprintf(
-			"%s:%s@tcp(%s:%s)/%s?parseTime=%s",
-			params.Username,
-			params.Password,
-			params.Host,
-			params.Port,
-			params.Database,
-			params.ParseTime)), &gorm.Config{})
-		if err != nil {
-			panic("failed to connect database")
+		var err error
+
+		if configKV["ENV"] == "test" {
+			dsn := "./../database/test_sqlite.db"
+			db, err = gorm.Open(sqlite.Open(dsn), &gorm.Config{})
+		} else {
+			params := MySQLParams{
+				Host:      configKV["DB_HOST"],
+				Port:      configKV["DB_PORT"],
+				Username:  configKV["DB_USERNAME"],
+				Password:  configKV["DB_PASSWORD"],
+				Database:  configKV["DB_DATABASE"],
+				ParseTime: configKV["DB_PARSE_TIME"],
+			}
+
+			// 生成对象
+			db, err = gorm.Open(mysql.Open(fmt.Sprintf(
+				"%s:%s@tcp(%s:%s)/%s?parseTime=%s",
+				params.Username,
+				params.Password,
+				params.Host,
+				params.Port,
+				params.Database,
+				params.ParseTime)), &gorm.Config{})
 		}
-		db = dbConn
+		if err != nil {
+			panic(fmt.Sprintf("failed to connect database: %s", err))
+		}
 	})
 }
 
@@ -63,12 +72,8 @@ type MySQLParams struct {
 	ParseTime string
 }
 
-func TestDB() *gorm.DB {
-	return db
-}
-
 func DropTestDB() error {
-	if err := os.Remove("./../database/realworld_test.db"); err != nil {
+	if err := os.Remove("./../database/test_sqlite.db"); err != nil {
 		return err
 	}
 	return nil
@@ -76,10 +81,10 @@ func DropTestDB() error {
 
 func AutoMigrate(db *gorm.DB) {
 	db.AutoMigrate(
-	//&model.User{},
-	//&model.Follow{},
-	//&model.Article{},
-	//&model.Comment{},
-	//&model.Tag{},
+		&model.UserModel{},
+		//&model.Follow{},
+		//&model.Article{},
+		//&model.Comment{},
+		//&model.Tag{},
 	)
 }

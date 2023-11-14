@@ -163,3 +163,7 @@ func (conn *singleton) ZRemRangeByScore(key string, scoreMin float64, scoreMax f
 
 	return true
 }
+
+func (conn *singleton) FlushDB() {
+	conn.rdb.FlushDB(ctx)
+}

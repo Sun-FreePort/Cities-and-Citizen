@@ -10,7 +10,7 @@ type UserModel struct {
 	Name             string `gorm:"index;not nul"`
 	AvatarPath       string
 	CityId           uint
-	Age              uint
+	Age              uint // 天数
 	Credit           float32
 	Money            float32
 	Energy           float32
