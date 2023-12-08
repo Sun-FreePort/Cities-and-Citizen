@@ -22,7 +22,192 @@ const docTemplate = `{
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
-    "paths": {}
+    "paths": {
+        "/square/info": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Square/广场"
+                ],
+                "summary": "获取信息(广场/城市)",
+                "parameters": [
+                    {
+                        "description": "基本参数",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.SquareInfoResp"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "JSON 格式的存档数据",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "错误码",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/square/publish": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Square/广场"
+                ],
+                "summary": "发表演讲",
+                "parameters": [
+                    {
+                        "description": "基本参数",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.PublishSpeechReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "JSON 格式的存档数据",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "错误码",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "handler.PublishSpeechReq": {
+            "type": "object",
+            "properties": {
+                "info": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.SquareInfoResp": {
+            "type": "object",
+            "properties": {
+                "city": {
+                    "$ref": "#/definitions/model.CityModel"
+                },
+                "speechCount": {
+                    "type": "integer"
+                },
+                "speechList": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.SpeechModel"
+                    }
+                }
+            }
+        },
+        "model.CityModel": {
+            "type": "object",
+            "properties": {
+                "copperLevel": {
+                    "type": "number"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "farmLevel": {
+                    "type": "number"
+                },
+                "fishLevel": {
+                    "type": "number"
+                },
+                "humanCount": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "ironLevel": {
+                    "type": "number"
+                },
+                "landHardBase": {
+                    "type": "number"
+                },
+                "landHas": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "pastureLevel": {
+                    "type": "number"
+                },
+                "silverLevel": {
+                    "type": "number"
+                },
+                "stoneLevel": {
+                    "type": "number"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "woodLevel": {
+                    "type": "number"
+                }
+            }
+        },
+        "model.SpeechModel": {
+            "type": "object",
+            "properties": {
+                "boo": {
+                    "type": "integer"
+                },
+                "cityId": {
+                    "type": "integer"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "info": {
+                    "type": "string"
+                },
+                "like": {
+                    "type": "integer"
+                },
+                "speakerId": {
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        }
+    }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it

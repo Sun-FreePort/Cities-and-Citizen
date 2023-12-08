@@ -1,4 +1,73 @@
 basePath: /
+definitions:
+  handler.PublishSpeechReq:
+    properties:
+      info:
+        type: string
+    type: object
+  handler.SquareInfoResp:
+    properties:
+      city:
+        $ref: '#/definitions/model.CityModel'
+      speechCount:
+        type: integer
+      speechList:
+        items:
+          $ref: '#/definitions/model.SpeechModel'
+        type: array
+    type: object
+  model.CityModel:
+    properties:
+      copperLevel:
+        type: number
+      createdAt:
+        type: string
+      farmLevel:
+        type: number
+      fishLevel:
+        type: number
+      humanCount:
+        type: integer
+      id:
+        type: integer
+      ironLevel:
+        type: number
+      landHardBase:
+        type: number
+      landHas:
+        type: integer
+      name:
+        type: string
+      pastureLevel:
+        type: number
+      silverLevel:
+        type: number
+      stoneLevel:
+        type: number
+      updatedAt:
+        type: string
+      woodLevel:
+        type: number
+    type: object
+  model.SpeechModel:
+    properties:
+      boo:
+        type: integer
+      cityId:
+        type: integer
+      createdAt:
+        type: string
+      id:
+        type: integer
+      info:
+        type: string
+      like:
+        type: integer
+      speakerId:
+        type: integer
+      updatedAt:
+        type: string
+    type: object
 host: localhost:22042
 info:
   contact:
@@ -11,5 +80,55 @@ info:
   termsOfService: https://www.uiosun.com/policy/privacy
   title: Cities-and-Citizen API
   version: "1.0"
-paths: {}
+paths:
+  /square/info:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 基本参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handler.SquareInfoResp'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: JSON 格式的存档数据
+          schema:
+            type: string
+        "403":
+          description: 错误码
+          schema:
+            type: string
+      summary: 获取信息(广场/城市)
+      tags:
+      - Square/广场
+  /square/publish:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 基本参数
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handler.PublishSpeechReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: JSON 格式的存档数据
+          schema:
+            type: string
+        "403":
+          description: 错误码
+          schema:
+            type: string
+      summary: 发表演讲
+      tags:
+      - Square/广场
 swagger: "2.0"

@@ -21,12 +21,14 @@ type Router struct {
 	H *handler.Handler
 }
 
+// RegisterF2E 静态资源注册
 func (r Router) RegisterF2E(app *fiber.App) {
 	app.Static("/", "./public")
 
 	app.Get("/swagger/*", swagger.HandlerDefault) // default
 }
 
+// RegisterB2E 无状态接口注册
 func (r Router) RegisterB2E(app *fiber.App) {
 	app.Get("/ping", func(c *fiber.Ctx) error {
 		return c.SendString("Hello, World 👋!")
@@ -37,7 +39,9 @@ func (r Router) RegisterB2E(app *fiber.App) {
 	})
 }
 
+// RegisterB2EAuth 鉴权接口注册
 func (r Router) RegisterB2EAuth(app *fiber.App) {
+	// 鉴权中间件 fixme 抽出去！抽出去！
 	authKeyMiddleware := keyauth.New(keyauth.Config{
 		AuthScheme: "Bearer",
 		Validator: func(c *fiber.Ctx, key string) (bool, error) {
@@ -55,10 +59,13 @@ func (r Router) RegisterB2EAuth(app *fiber.App) {
 		},
 	})
 
+	// 路由
 	square := app.Group("/square", authKeyMiddleware)
 	square.Get("/info", r.H.SquareInfo)
+	square.Post("/publish", r.H.SquarePublish)
 }
 
+// NewApp 新建一个应用
 func (r Router) NewApp(configDict map[string]string, logFile *os.File) *fiber.App {
 	isProd := configDict["ENV"] == "prod" || configDict["ENV"] == "production"
 
@@ -89,7 +96,7 @@ func (r Router) NewApp(configDict map[string]string, logFile *os.File) *fiber.Ap
 		Next: func(c *fiber.Ctx) bool {
 			return c.IP() == "127.0.0.1"
 		},
-		Max:        20,
+		Max:        45,
 		Expiration: 30 * time.Second,
 		LimitReached: func(c *fiber.Ctx) error {
 			return c.SendStatus(fiber.StatusTooManyRequests)
