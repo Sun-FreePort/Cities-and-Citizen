@@ -28,5 +28,4 @@ func TestSquareInfoSuccess(t *testing.T) {
 
 		assert.Equal(t, int16(2), aa.SpeechCount)
 	}
-
 }
